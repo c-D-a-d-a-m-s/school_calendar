@@ -31,6 +31,7 @@ bool check_for_leap_year(int year);
 void get_first_of_month(struct date date);
 void get_last_of_month(struct date date);
 int count_days(struct date start, struct date end);
+bool check_valid_date(struct date date);
 
 int main() {
 
@@ -38,7 +39,7 @@ int main() {
 }
 
 bool check_for_leap_year(int year) {
-    /*Determines whether year is a leap year*/
+    /*Returns true if int year is a leap year*/
     if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
         return true;
     }
@@ -94,4 +95,28 @@ int count_days(struct date start, struct date end) {
     }
 
     return 365 * (end.year - start.year) + (end_index - start_index + 1) + leap_days;
+}
+
+bool check_valid_date(struct date date) {
+    /*Returns true if the struct members (date.day, date.month, date.year)
+    correspond to a valid date between 1/1/2000-12/31/9999*/
+    if (date.year < 2000 || date.year > 9999) {
+        return false;
+    }
+
+    if (date.month < 1 || date.month > 12) {
+        return false;
+    }
+
+    const int total_days[] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (date.day < 1 || date.day > total_days[date.month]) {
+        return false;
+    }
+
+    if (date.day == 29 && date.month == FEBRUARY && !(check_for_leap_year(date.year))) {
+        return false;
+    }
+
+    return true;
+
 }

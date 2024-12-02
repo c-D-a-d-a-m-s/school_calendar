@@ -1,0 +1,185 @@
+Unit test - check_valid_date() function
+
+FUNCTION TESTED:
+
+bool check_valid_date(struct date date) {
+    /*Returns true if the struct members (date.day, date.month, date.year)
+    correspond to a valid date between 1/1/2000-12/31/9999*/
+    if (date.year < 2000 || date.year > 9999) {
+        return false;
+    }
+
+    if (date.month < 1 || date.month > 12) {
+        return false;
+    }
+
+    const int total_days[] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (date.day < 1 || date.day > total_days[date.month]) {
+        return false;
+    }
+
+    if (date.day == 29 && date.month == FEBRUARY && !(check_for_leap_year(date.year))) {
+        return false;
+    }
+
+    return true;
+
+}
+
+
+TEST PERFORMED:
+
+int main() {
+
+    //Base case, Expected Outcome: 1
+    UNIT_TEST_check_valid_date(12,31,2001,1);
+
+    /*YEAR TESTS*/
+    
+    //year < 1900, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(12,1,1899,0);
+
+    //year > 10000, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(12,1,10000,0);
+
+    /*MONTH TESTS*/
+
+    //month < 1, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(0,1,2001,0);
+
+    //month > 2, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(13,1,2001,0);
+
+    /*DAY TESTS*/
+
+    //day < 1, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(12,0,2001,0);
+
+    //day > 31, month == 1, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(1,32,2001,0);
+
+    //day > 29, month == 2, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(2,30,2001,0);
+
+    //day > 31, month == 3, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(3,32,2001,0);
+
+    //day > 30, month == 4, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(4,31,2001,0);
+
+    //day > 31, month == 5, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(5,32,2001,0);
+
+    //day > 30, month == 6, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(6,31,2001,0);
+
+    //day > 31, month == 7, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(7,32,2001,0);
+
+    //day > 31, month == 8, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(8,32,2001,0);
+
+    //day > 30, month == 9, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(9,31,2001,0);
+
+    //day > 31, month == 10, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(10,32,2001,0);
+
+    //day > 30, month == 11, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(11,31,2001,0);
+
+    //day > 31, month == 12, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(12,32,2001,0);
+
+    /*LEAP YEAR TESTS*/
+
+    //year % 4 == 0, Expected Outcome: 1
+    UNIT_TEST_check_valid_date(2,29,2004,1);
+
+    //year % 400, Expected Outcome: 1
+    UNIT_TEST_check_valid_date(2,29,2400,1);
+
+    //year % 100 == 0, year % 400 != 0, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(2,29,2100,0);
+
+    //year % 4 != 0, Expected Outcome: 0
+    UNIT_TEST_check_valid_date(2,29,2003,0);
+
+    return 0;
+}
+
+void UNIT_TEST_check_valid_date(int month, int day, int year, int expected_outcome) {
+    struct date test = (struct date) {.month = month, .day = day, .year = year};
+    printf("\nDATE | EXPECTED OUTCOME | RESULT\n");
+    printf("%d/%d/%d | %d | %d\n", test.month, test.day, test.year, expected_outcome, check_valid_date(test));
+}
+
+
+RESULTS:
+
+DATE | EXPECTED OUTCOME | RESULT
+12/31/2001 | 1 | 1
+
+DATE | EXPECTED OUTCOME | RESULT
+12/1/1899 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+12/1/10000 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+0/1/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+13/1/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+12/0/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+1/32/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+2/30/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+3/32/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+4/31/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+5/32/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+6/31/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+7/32/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+8/32/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+9/31/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+10/32/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+11/31/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+12/32/2001 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+2/29/2004 | 1 | 1
+
+DATE | EXPECTED OUTCOME | RESULT
+2/29/2400 | 1 | 1
+
+DATE | EXPECTED OUTCOME | RESULT
+2/29/2100 | 0 | 0
+
+DATE | EXPECTED OUTCOME | RESULT
+2/29/2003 | 0 | 0
+
