@@ -4,20 +4,9 @@
 #include <string.h>
 
 //function prototypes
-
 void get_user_input(char *prompt, char **user_input_dptr);
 
-int main() {
-
-    char *str_ptr = NULL;
-
-    while (true) {
-        get_user_input("Enter input.\n", &str_ptr);
-        printf("\nYou entered: %s\n", str_ptr);
-    }
-
-    return 0;
-}
+//functions
 void get_user_input(char *prompt, char **user_input_dptr) {
     int stdin_drain = 0;
     bool invalid_input = true;
