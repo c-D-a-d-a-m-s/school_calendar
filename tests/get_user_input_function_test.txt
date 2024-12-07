@@ -1,0 +1,87 @@
+Unit test - get_user_input() function
+
+FUNCTION TESTED:
+
+void get_user_input(char *prompt, char **user_input_dptr) {
+    int stdin_drain = 0;
+    bool invalid_input = true;
+    const size_t MAX_USER_INPUT = 100;
+
+    do {
+        char *temp_str_ptr = (char*) calloc(MAX_USER_INPUT, sizeof(char));
+        fputs(prompt, stdout);
+        fputs("\033[38;2;254;254;0;1ms_cal-$ \033[0m", stdout);
+        fgets(temp_str_ptr, MAX_USER_INPUT, stdin);
+
+        for (size_t i = 0; i < MAX_USER_INPUT; i++) {
+            if (*(temp_str_ptr + i) == '\n') {
+                *(temp_str_ptr + i) = '\0';
+                *user_input_dptr = (char*) calloc(i + 1, sizeof(char));
+                strcpy(*user_input_dptr, temp_str_ptr);
+                invalid_input = false;
+                break;
+            }
+            if (i == MAX_USER_INPUT - 1 && i != EOF) {
+                do
+                    stdin_drain = getchar();
+                while (stdin_drain != EOF && stdin_drain != '\n' );
+                clearerr(stdin);
+
+                fputs("\033[38;2;254;0;0;1mERROR: User input exceeds maximum character limit.\033[0m\n\n", stdout);
+            }
+        }
+        free(temp_str_ptr);
+        temp_str_ptr = NULL;
+    } while (invalid_input);
+}
+
+UNIT TEST CASES:
+
+Base case
+input < 98 chars
+
+Off by one cases
+input = 98 chars
+input = 99 chars
+input = 100 chars
+input = 101 chars
+
+TEST PERFORMED:
+
+int main() {
+
+    char *str_ptr = NULL;
+
+    while (true) {
+        get_user_input("Enter input.\n", &str_ptr);
+        printf("\nYou entered: %s\n", str_ptr);
+    }
+
+    return 0;
+}
+
+RESULTS:
+
+terminal:~$ ./test
+Enter input.
+s_cal-$ 0987654321
+
+You entered: 0987654321
+Enter input.
+s_cal-$ 09876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543 
+
+You entered: 09876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543
+Enter input.
+s_cal-$ 098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321098765432
+ERROR: User input exceeds maximum character limit.
+
+Enter input.
+s_cal-$ 0987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321
+ERROR: User input exceeds maximum character limit.
+
+Enter input.
+s_cal-$ 09876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210
+ERROR: User input exceeds maximum character limit.
+
+Enter input.
+s_cal-$ 

@@ -1,0 +1,144 @@
+Unit test - count_days() function
+
+FUNCTION TESTED:
+int count_days(struct date start, struct date end) {
+    /*Count number of days in range, including start and end dates*/
+    int days_per_month[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int start_index = 0;
+    int end_index = 0;
+    int leap_days = 0;
+
+    for (size_t i = 0; i < start.month; start_index += days_per_month[i], i++);
+    start_index += start.day;
+    if (check_for_leap_year(start.year) && start.month > FEBRUARY) {
+        start_index++;
+    }
+
+    for (size_t i = 0; i < end.month; end_index += days_per_month[i], i++);
+    end_index += end.day;
+    if (check_for_leap_year(end.year) && end.month > FEBRUARY) {
+        end_index++;
+}
+
+UNIT TEST CASES:
+S = start date
+E = end date
+ly = leap year
+= reads as "in"
+!= reads as "not in"
+
+Same year, non-leap year
+S---------------E
+
+Same year, leap year
+S----2/29-------E
+--2/29---S------E
+S---E--------2/29
+
+Different consecutive years, non-leap years
+S------|--------E
+
+Different consecutive years, S != ly, E = ly
+S-----|--E---2/29
+S-----|--2/29---E
+
+Different consecutive years, S = ly, E != ly
+S---2/29--|-----E
+2/29---S---|----E
+
+Multiple years, S != ly, no ly, E != ly
+S-----|----|----E
+
+Multiple years, S != ly, ly, E != ly
+S--|--2/29--|---E
+
+Multiple years, S = ly, no ly, E = ly
+S--2/29--|--|---E--2/29
+2/29--S--|--|--2/29---E
+S--2/29--|--|--2/29---E
+2/29--S--|--|---E--2/29
+
+TEST PERFORMED:
+int main() {
+
+    test_count_days((struct date) {2005, 1, 1}, (struct date) {2005, 12, 31}, 365);
+
+    test_count_days((struct date) {2004, 1, 1}, (struct date) {2004, 12, 31}, 366);
+    test_count_days((struct date) {2004, 3, 1}, (struct date) {2004, 12, 31}, 306);
+    test_count_days((struct date) {2004, 1, 1}, (struct date) {2004, 2, 28}, 59);
+
+    test_count_days((struct date) {2005, 1, 1}, (struct date) {2006, 12, 31}, 2*365);
+
+    test_count_days((struct date) {2003, 2, 1}, (struct date) {2004, 1, 31}, 365);
+    test_count_days((struct date) {2003, 4, 1}, (struct date) {2004, 3, 31}, 366);
+
+    test_count_days((struct date) {2004, 2, 1}, (struct date) {2005, 1, 31}, 366);
+    test_count_days((struct date) {2004, 3, 1}, (struct date) {2005, 2, 28}, 365);
+
+    test_count_days((struct date) {2005, 1, 1}, (struct date) {2007, 12, 31}, 3*365);
+
+    test_count_days((struct date) {2003, 1, 1}, (struct date) {2005, 12, 31}, 3*365+1);
+
+    test_count_days((struct date) {2004, 2, 1}, (struct date) {2008, 1, 31}, 4*365+1);
+    test_count_days((struct date) {2004, 4, 1}, (struct date) {2008, 3, 31}, 4*365+1);
+    test_count_days((struct date) {2004, 1, 1}, (struct date) {2008, 12, 31}, 5*365+2);
+    test_count_days((struct date) {2004, 3, 1}, (struct date) {2008, 2, 28}, 4*365);
+
+    return 0;
+}
+
+void test_count_days(struct date start, struct date end, int expected_result) {
+    printf("\nDate Range | Expected Value | Returned Value\n");
+    printf("%d/%d/%d - %d/%d/%d | %d | %d\n",
+        start.month, start.day, start.year, end.month, end.day, end.year,
+        expected_result, count_days(start, end));
+}
+
+RESULTS:
+Date Range | Expected Value | Returned Value
+1/1/2005 - 12/31/2005 | 365 | 365
+
+Date Range | Expected Value | Returned Value
+1/1/2004 - 12/31/2004 | 366 | 366
+
+Date Range | Expected Value | Returned Value
+3/1/2004 - 12/31/2004 | 306 | 306
+
+Date Range | Expected Value | Returned Value
+1/1/2004 - 2/28/2004 | 59 | 59
+
+Date Range | Expected Value | Returned Value
+1/1/2005 - 12/31/2006 | 730 | 730
+
+Date Range | Expected Value | Returned Value
+2/1/2003 - 1/31/2004 | 365 | 365
+
+Date Range | Expected Value | Returned Value
+4/1/2003 - 3/31/2004 | 366 | 366
+
+Date Range | Expected Value | Returned Value
+2/1/2004 - 1/31/2005 | 366 | 366
+
+Date Range | Expected Value | Returned Value
+3/1/2004 - 2/28/2005 | 365 | 365
+
+Date Range | Expected Value | Returned Value
+1/1/2005 - 12/31/2007 | 1095 | 1095
+
+Date Range | Expected Value | Returned Value
+1/1/2003 - 12/31/2005 | 1096 | 1096
+
+Date Range | Expected Value | Returned Value
+2/1/2004 - 1/31/2008 | 1461 | 1461
+
+Date Range | Expected Value | Returned Value
+4/1/2004 - 3/31/2008 | 1461 | 1461
+
+Date Range | Expected Value | Returned Value
+1/1/2004 - 12/31/2008 | 1827 | 1827
+
+Date Range | Expected Value | Returned Value
+3/1/2004 - 2/28/2008 | 1460 | 1460
+
+Date Range | Expected Value | Returned Value
+3/1/2004 - 2/28/2008 | 1460 | 1460
