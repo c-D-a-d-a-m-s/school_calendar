@@ -1,5 +1,11 @@
+/********************************/
+/***          date.c          ***/
+/********************************/
+
+/*** includes ***/
 #include "date.h"
 
+/*** function definitions ***/
 bool check_for_leap_year(int year) {
     /*Returns true if int year is a leap year*/
     if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {

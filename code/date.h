@@ -1,14 +1,16 @@
-/*date.h*/
+/********************************/
+/***          date.h          ***/
+/********************************/
 
 #ifndef DATE_H
 #define DATE_H
 
+/*** includes ***/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
-//data structures
-
+/*** data types */
 struct date {
     int year;
     int month;
@@ -25,7 +27,7 @@ enum months {JANUARY = 1, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY,
 
 enum weekdays {SUNDAY, MONDAY, TUESDAY, WEDNESDAY,THURSDAY, FRIDAY, SATURDAY};
 
-//function prototypes
+/*** function declarations ***/
 bool check_for_leap_year(int year);
 void get_first_of_month(struct date date, struct date*);
 void get_last_of_month(struct date date, struct date*);
