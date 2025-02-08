@@ -16,14 +16,14 @@ bool check_for_leap_year(int year) {
     }
 }
 
-void get_first_of_month(struct date date, struct date *first_of_month) {
+void get_first_of_month(Date date, Date *first_of_month) {
     /*Returns the first date of the month*/
     first_of_month->year = date.year;
     first_of_month->month = date.month;
     first_of_month->day = 1;
 }
 
-void get_last_of_month(struct date date, struct date *last_of_month) {
+void get_last_of_month(Date date, Date *last_of_month) {
     /*Returns the last date of the month*/
     last_of_month->year = date.year;
     last_of_month->month = date.month;
@@ -35,12 +35,13 @@ void get_last_of_month(struct date date, struct date *last_of_month) {
     }
 }
 
-int count_days(struct date start, struct date end) {
+int count_days(Date start, Date end) {
     /*Count number of days in range, including start and end dates*/
     int days_per_month[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int start_index = 0;
     int end_index = 0;
     int leap_days = 0;
+    const int FEBRUARY = 2;
 
     for (size_t i = 0; i < start.month; start_index += days_per_month[i], i++);
     start_index += start.day;
@@ -65,9 +66,11 @@ int count_days(struct date start, struct date end) {
     return 365 * (end.year - start.year) + (end_index - start_index + 1) + leap_days;
 }
 
-bool check_valid_date(struct date date) {
+bool check_valid_date(Date date) {
     /*Returns true if the struct members (date.day, date.month, date.year)
     correspond to a valid date between 1/1/2000-12/31/9999*/
+    const int FEBRUARY = 2;
+    
     if (date.year < 2000 || date.year > 9999) {
         return false;
     }

@@ -11,27 +11,17 @@
 #include <stdbool.h>
 
 /*** data types */
-struct date {
+typedef struct {
     int year;
     int month;
     int day;
-};
-
-struct date_range{
-    struct date start;
-    struct date end;
-};
-
-enum months {JANUARY = 1, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY,
-    AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER};
-
-enum weekdays {SUNDAY, MONDAY, TUESDAY, WEDNESDAY,THURSDAY, FRIDAY, SATURDAY};
+} Date;
 
 /*** function declarations ***/
 bool check_for_leap_year(int year);
-void get_first_of_month(struct date date, struct date*);
-void get_last_of_month(struct date date, struct date*);
-int count_days(struct date start, struct date end);
-bool check_valid_date(struct date date);
+void get_first_of_month(Date date, Date*);
+void get_last_of_month(Date date, Date*);
+int count_days(Date start, Date end);
+bool check_valid_date(Date date);
 
 #endif
