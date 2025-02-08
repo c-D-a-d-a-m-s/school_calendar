@@ -4,6 +4,7 @@
 
 /*** includes ***/
 #include "date.h"
+#include "term_mode.h"
 
 /*** init ***/
 int main() {
