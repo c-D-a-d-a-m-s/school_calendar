@@ -43,20 +43,20 @@ int count_days(Date start, Date end) {
     int leap_days = 0;
     const int FEBRUARY = 2;
 
-    for (size_t i = 0; i < start.month; start_index += days_per_month[i], i++);
+    for (int i = 0; i < start.month; start_index += days_per_month[i], i++);
     start_index += start.day;
     if (check_for_leap_year(start.year) && start.month > FEBRUARY) {
         start_index++;
     }
 
-    for (size_t i = 0; i < end.month; end_index += days_per_month[i], i++);
+    for (int i = 0; i < end.month; end_index += days_per_month[i], i++);
     end_index += end.day;
     if (check_for_leap_year(end.year) && end.month > FEBRUARY) {
         end_index++;
     }
 
     if (start.year != end.year) {
-        for (size_t year = start.year; year < end.year; year++) {
+        for (int year = start.year; year < end.year; year++) {
             if (check_for_leap_year(year)) {
                 leap_days++;
             }
@@ -70,7 +70,7 @@ bool check_valid_date(Date date) {
     /*Returns true if the struct members (date.day, date.month, date.year)
     correspond to a valid date between 1/1/2000-12/31/9999*/
     const int FEBRUARY = 2;
-    
+
     if (date.year < 2000 || date.year > 9999) {
         return false;
     }
