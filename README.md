@@ -1,4 +1,4 @@
-# SCHOOL CALENDAR #
+## SCHOOL CALENDAR ##
 
 # PURPOSE #
 This program is a planning aid for homeschool parents who
@@ -13,6 +13,3 @@ dedicated to schooling. The program generates a calendar and
 the total number of free days available to schedule. The user
 can then schedule free days, and the program updates the calendar
 to reflect user input.
-
-
-12345678901234567890123456789012345678901234567890123456789012345
