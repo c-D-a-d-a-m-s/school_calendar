@@ -1,11 +1,11 @@
-## SCHOOL CALENDAR ##
+# SCHOOL CALENDAR #
 
-# PURPOSE #
+## PURPOSE ##
 This program is a planning aid for homeschool parents who
 intend to take a year-round approach to homeschooling.
 
 
-# DESCRIPTION #
+## DESCRIPTION ##
 Shell program that generates a school calendar based on user
 input. User provides a start and end date for the school year,
 the total number of school days, and which weekdays will be
